@@ -1,12 +1,10 @@
-package com.example.task_planner.presentation.screens
+package com.example.task_planner.presentation.screens.main_screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,18 +32,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.task_planner.R
 import com.example.task_planner.presentation.navigation.NavigationScreens
-import com.example.task_planner.ui.theme.TASK_PLANNERTheme
 import com.example.task_planner.ui.theme.Typography
 
 @Composable
-fun MainScreen(controller: NavController){
+fun MainScreen(
+    controller: NavController,
+    mainScreenViewModel: MainScreenViewModel = hiltViewModel()
+){
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     Column(
@@ -87,11 +85,22 @@ fun MainScreen(controller: NavController){
         }
         Spacer(modifier = Modifier.height(118.dp))
         ButtonElement(text = "Войти в систему") {
+            Log.d("EMAIL", mainScreenViewModel.userInfo.value.user?.email.toString())
             if(login.value.isNotBlank() && password.value.isNotBlank()){
-                controller.navigate(NavigationScreens.TabPage.route)
+                mainScreenViewModel.AuthorizeUser(login.value.trim(), password.value.trim())
             }
         }
+
+        if(mainScreenViewModel.userInfo.value.user?.email?.isNotBlank() == true){
+            controller.navigate(NavigationScreens.TabPage.route)
+        }
+
+        if(mainScreenViewModel.userInfo.value.idLoading){
+
+        }
     }
+
+
 }
 
 @Composable

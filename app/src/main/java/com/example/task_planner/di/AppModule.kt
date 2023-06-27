@@ -1,7 +1,6 @@
 package com.example.task_planner.di
 
-import com.example.task_planner.data.database_helper.DatabaseHelper
-import com.example.task_planner.data.remote.DatabaseService
+import com.example.task_planner.domain.repository.DatabaseService
 import com.example.task_planner.data.repository.DatabaseServiceImpl
 import dagger.Module
 import dagger.Provides

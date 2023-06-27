@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "543915219141",
+    "firebase_url": "https://task-planner-c68dd-default-rtdb.firebaseio.com",
+    "project_id": "task-planner-c68dd",
+    "storage_bucket": "task-planner-c68dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543915219141:android:c8db828653170ecf2cf8ac",
+        "android_client_info": {
+          "package_name": "com.example.task_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543915219141-holg84j0jpe1la3f36c3bfao42ftscpt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9XNlsQMlHSuKQiGEA4EzayR8C4G_onSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543915219141-holg84j0jpe1la3f36c3bfao42ftscpt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
