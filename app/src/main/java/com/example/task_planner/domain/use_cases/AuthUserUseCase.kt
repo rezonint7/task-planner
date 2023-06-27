@@ -17,20 +17,11 @@ import javax.inject.Inject
 
 class AuthUserUseCase @Inject constructor(private val repository: DatabaseService){
     operator fun invoke(login: String, password: String): Flow<Resource<FirebaseUser?>> = flow {
-        var user: FirebaseUser? = null
         try{
             emit(Resource.Loading())
-            val task = repository.authorizeUser(login, password).addOnCompleteListener{ task ->
-                if(task.isSuccessful){
-                    user = Firebase.auth.currentUser
-                    Log.d("EMAIL2", user?.email.toString())
-
-                }
-            }.addOnFailureListener { Log.d("ERROR", it.message.toString()) }.await().user
-            val result = repository.authorizeUser(login, password).await()
-
-
-            emit( Resource.Success(result.user))
+            val result = repository.authorizeUser(login, password).await().user
+            Log.d("error", result?.email.toString())
+            emit(Resource.Success(result))
 
         }catch (e: FirebaseAuthException){
             emit(Resource.Error(message = e.message.toString()))

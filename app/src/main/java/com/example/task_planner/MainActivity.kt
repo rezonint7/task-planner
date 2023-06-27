@@ -32,16 +32,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = NavigationScreens.Main.route) {
-                        composable(NavigationScreens.Main.route) {
+                        composable(route = NavigationScreens.Main.route) {
                             MainScreen(controller = navController)
                         }
                         composable(NavigationScreens.TabPage.route) {
-                            TabPage(controller = navController)
-                        }
-                        composable(NavigationScreens.TaskList.route) {
-                            TabPage(controller = navController)
-                        }
-                        composable(NavigationScreens.TaskDoneList.route) {
                             TabPage(controller = navController)
                         }
                     }

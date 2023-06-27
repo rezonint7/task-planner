@@ -32,6 +32,7 @@ class MainScreenViewModel @Inject constructor(private val authUserUseCase: AuthU
                     Log.d("Email", _userInfo.value.user?.email.toString())
                 }
             }
+            Log.d("error", "vm")
         }.launchIn(viewModelScope)
     }
 }

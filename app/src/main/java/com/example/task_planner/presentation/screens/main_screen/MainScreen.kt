@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -90,17 +91,18 @@ fun MainScreen(
                 mainScreenViewModel.AuthorizeUser(login.value.trim(), password.value.trim())
             }
         }
-
-        if(mainScreenViewModel.userInfo.value.user?.email?.isNotBlank() == true){
-            controller.navigate(NavigationScreens.TabPage.route)
-        }
-
-        if(mainScreenViewModel.userInfo.value.idLoading){
-
+        var navigateToTabPage by remember { mutableStateOf(false) }
+        LaunchedEffect(mainScreenViewModel.userInfo.value.user?.email) {
+            if (mainScreenViewModel.userInfo.value.user?.email?.isNotBlank() == true && !navigateToTabPage) {
+                navigateToTabPage = true
+                controller.navigate(NavigationScreens.TabPage.route){
+                    popUpTo(NavigationScreens.Main.route) {
+                        inclusive = true
+                    }
+                }
+            }
         }
     }
-
-
 }
 
 @Composable
