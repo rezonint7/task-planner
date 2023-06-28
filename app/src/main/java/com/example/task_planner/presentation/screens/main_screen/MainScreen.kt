@@ -1,8 +1,10 @@
 package com.example.task_planner.presentation.screens.main_screen
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +16,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -84,8 +91,8 @@ fun MainScreen(
             )
             EditTextElement(hint = "Введите пароль", password, true)
         }
-        Spacer(modifier = Modifier.height(118.dp))
-        ButtonElement(text = "Войти в систему") {
+        Spacer(modifier = Modifier.height(108.dp))
+        ButtonElement {
             Log.d("EMAIL", mainScreenViewModel.userInfo.value.user?.email.toString())
             if(login.value.isNotBlank() && password.value.isNotBlank()){
                 mainScreenViewModel.AuthorizeUser(login.value.trim(), password.value.trim())
@@ -106,16 +113,32 @@ fun MainScreen(
 }
 
 @Composable
-fun ButtonElement(text: String = "", onClick: () -> Unit){
+fun ButtonElement(isDone: Int = -1, onClick: () -> Unit){
+    val text = when(isDone){
+        1 -> "Отметить как выполненную"
+        2 -> "Выполнено"
+        3 -> "123"
+        else -> "Войти в систему"
+    }
+
     Button(
         onClick = { onClick() },
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 14.dp),
+            .fillMaxWidth().height(48.dp)
+            .padding(horizontal = 14.dp)
+            .border(border = BorderStroke(1.dp, Color(0xFF00A9EC)), shape = RoundedCornerShape(10.dp)),
         shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00A9EC))
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00A9EC), disabledContainerColor = Color(0xFF86DDFF)),
+        enabled = isDone in -1..1
     ) {
-        Text(text = text, style = Typography.titleMedium)
+        if(isDone == 2 or 3) Icon(
+            imageVector = Icons.Default.Done,
+            contentDescription = "iconDone",
+            modifier = Modifier.size(48.dp),
+            tint = Color(0xA9000000)
+        )
+        val color = if(isDone == 2) Color(0xA9000000) else Color.White
+        Text(text = text, style = Typography.titleMedium, color = color)
     }
 }
 

@@ -6,9 +6,11 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.Flow
 
 interface DatabaseService {
     suspend fun getAuthUser(): FirebaseUser?
     suspend fun authorizeUser(email: String, password: String): Task<AuthResult>
-    suspend fun getTasksList(userKey: String): List<TaskWorker>
+    suspend fun getTasksList(userKey: String): Flow<List<TaskWorker>>
+    suspend fun updateTask(userKey: String, updatedTasks: List<TaskWorker>)
 }

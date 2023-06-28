@@ -15,9 +15,9 @@ class GetDataUseCase @Inject constructor(private val repository: DatabaseService
     operator fun invoke(userKey: String): Flow<Resource<List<TaskWorker>?>> = flow {
         try{
             emit(Resource.Loading())
-            val result = repository.getTasksList(userKey)
-            Log.d("222", result.toString())
-            emit(Resource.Success(result))
+            repository.getTasksList(userKey).collect { tasks ->
+                emit(Resource.Success(tasks))
+            }
         }catch(e: FirebaseTooManyRequestsException){
 
         }

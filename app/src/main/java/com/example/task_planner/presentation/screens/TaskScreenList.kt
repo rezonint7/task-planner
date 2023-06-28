@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
+import androidx.compose.material.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -35,7 +35,7 @@ fun TaskScreenList(list: List<TaskWorker>){
         .fillMaxSize()
         .background(Color.White)) {
         LazyColumn(modifier = Modifier.fillMaxSize()){
-            items(list.drop(1)){ task ->
+            items(list){ task ->
                 TaskElement(task = task)
             }
         }
@@ -45,27 +45,23 @@ fun TaskScreenList(list: List<TaskWorker>){
 @Composable
 fun TaskElement(task: TaskWorker?){
     Card(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.White)) {
+        .fillMaxWidth().padding(bottom = 8.dp),
+        backgroundColor = Color.White,
+        elevation = 8.dp
+    ) {
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)){
             Text(text = task?.NameTask.toString(), style = Typography.titleMedium, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = task?.TaskOverview.toString(), style = Typography.titleMedium, color = Color.Black)
+            Text(text = task?.TaskOverview.toString(), style = Typography.bodySmall, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Срок выполнения: ", style = Typography.titleMedium, color = Color.Black)
+            Text(text = "Срок выполнения: ", style = Typography.bodySmall, color = Color.Black)
+            Text(text = "до " + task?.DateDone.toString(), style = Typography.bodySmall, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "до " + task?.DateDone.toString(), style = Typography.titleMedium, color = Color.Black)
-        }
-        ButtonElement("Отметить как выполненную") {
+            ButtonElement(task?.IsDone!!.toInt()) {
 
+            }
         }
     }
-}
-
-@Preview
-@Composable
-fun preview1() {
-
 }
