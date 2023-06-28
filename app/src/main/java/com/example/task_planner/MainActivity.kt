@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.task_planner.presentation.navigation.NavigationScreens
 import com.example.task_planner.presentation.screens.main_screen.MainScreen
-import com.example.task_planner.presentation.screens.TabPage
+import com.example.task_planner.presentation.screens.tab_page_screen.TabPage
 import com.example.task_planner.ui.theme.TASK_PLANNERTheme
 import dagger.hilt.android.AndroidEntryPoint
 

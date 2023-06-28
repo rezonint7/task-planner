@@ -25,7 +25,7 @@ class MainScreenViewModel @Inject constructor(private val authUserUseCase: AuthU
                     _userInfo.value = MainScreenState(error = result.message.toString())
                 }
                 is Resource.Loading -> {
-                    _userInfo.value = MainScreenState(idLoading = true)
+                    _userInfo.value = MainScreenState(isLoading = true)
                 }
                 is Resource.Success -> {
                     _userInfo.value = MainScreenState(user = result.data)

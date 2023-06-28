@@ -8,18 +8,11 @@ class SharedPrefsHelper(context: Context) {
         SharedPrefsConstants.APP_NAME_SHAREDPREFS, Context.MODE_PRIVATE
     )
 
-    fun setToken(tokens: Tokens) {
-        if(tokens.access_token != null) sharedPrefs.edit().putString(SharedPrefsConstants.JSON_TOKENS, Gson().toJson(tokens)).apply()
+    fun setToken(token: String) {
+        if(token.isNotBlank()) sharedPrefs.edit().putString(SharedPrefsConstants.JSON_TOKEN, token).apply()
     }
-
-    fun getToken(): Tokens? {
-        val json = sharedPrefs.getString(SharedPrefsConstants.JSON_TOKENS, "")
-        return Gson().fromJson(json, Tokens::class.java) ?: null
-    }
-
-    fun containsTokens(): Boolean {
-        return sharedPrefs.contains(SharedPrefsConstants.JSON_TOKENS)
-    }
+    fun getToken(): String? = sharedPrefs.getString(SharedPrefsConstants.JSON_TOKEN, "")
+    fun containsTokens(): Boolean = sharedPrefs.contains(SharedPrefsConstants.JSON_TOKEN)
 
     companion object {
         private var INSTANCE: SharedPrefsHelper? = null
