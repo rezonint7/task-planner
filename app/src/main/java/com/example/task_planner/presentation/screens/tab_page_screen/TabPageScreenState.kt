@@ -8,3 +8,7 @@ data class TabPageScreenState(
     val tasks: List<TaskWorker>? = null,
     val error: String = ""
 )
+data class UpdatedTask(
+    val isUpdated: Boolean = false,
+    val error: String = ""
+)

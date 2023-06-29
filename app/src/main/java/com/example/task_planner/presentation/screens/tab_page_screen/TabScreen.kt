@@ -1,5 +1,7 @@
 package com.example.task_planner.presentation.screens.tab_page_screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +32,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabPage(
@@ -71,15 +74,9 @@ fun TabPage(
             dragEnabled = true
         ) { page ->
             when (page) {
-                0 -> TaskScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 1 } ?: emptyList())
-                1 -> TaskDoneScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 2 } ?: emptyList())
+                0 -> TaskScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 1 } ?: emptyList(), tabPageScreenViewModel)
+                1 -> TaskDoneScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 3 } ?: emptyList())
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun preview(){
-    TabPage(controller = rememberNavController())
 }

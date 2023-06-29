@@ -6,9 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.task_planner.common.Resource
+import com.example.task_planner.data.models.TaskWorker
 import com.example.task_planner.domain.repository.DatabaseService
 import com.example.task_planner.domain.use_cases.AuthUserUseCase
 import com.example.task_planner.domain.use_cases.GetDataUseCase
+import com.example.task_planner.domain.use_cases.UpdateDataUseCase
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,9 +19,13 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class TabPageScreenViewModel @Inject constructor(private val getDataUseCase: GetDataUseCase): ViewModel() {
+class TabPageScreenViewModel @Inject constructor(
+    private val getDataUseCase: GetDataUseCase,
+    private val updateDataUseCase: UpdateDataUseCase): ViewModel() {
     private val _tasks = mutableStateOf<TabPageScreenState>(TabPageScreenState())
+    private val _isUpdatedTask = mutableStateOf<UpdatedTask>(UpdatedTask())
     val tasks: State<TabPageScreenState> = _tasks
+    val isUpdatedTask = _isUpdatedTask
 
     init {
         getTasks(Firebase.auth.currentUser?.uid.toString())
@@ -39,6 +45,16 @@ class TabPageScreenViewModel @Inject constructor(private val getDataUseCase: Get
                 }
             }
             Log.d("error", "vm")
+        }.launchIn(viewModelScope)
+    }
+
+    fun updateTask(userKey: String, index: Int, updatedTask: TaskWorker){
+        updateDataUseCase(userKey, index, updatedTask).onEach { result ->
+            when(result){
+                is Resource.Error -> { _isUpdatedTask.value = UpdatedTask(error = result.message ?: "") }
+                is Resource.Success -> { _isUpdatedTask.value = UpdatedTask(isUpdated = result.data ?: false) }
+                else -> {}
+            }
         }.launchIn(viewModelScope)
     }
 }
