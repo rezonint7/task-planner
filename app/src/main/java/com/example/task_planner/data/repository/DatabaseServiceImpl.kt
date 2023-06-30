@@ -54,17 +54,20 @@ class DatabaseServiceImpl: DatabaseService {
         }
     }
     override suspend fun updateTask(userKey: String, index: Int, updatedTask: TaskWorker): Boolean {
-        val database = DatabaseHelper.getRealTimeDatabase().getReferenceFromUrl(Constants.DATABASE_NAME).child(userKey).child("TaskWorker")
+        val database = DatabaseHelper.getRealTimeDatabase().getReferenceFromUrl(Constants.DATABASE_NAME)
+            .child(userKey)
+            .child("TaskWorker")
+            .child((index+1).toString())
         return suspendCancellableCoroutine { continuation ->
             val taskListener = object : ValueEventListener {
                 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
                 @SuppressLint("SimpleDateFormat")
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("123", snapshot.toString())
-                    val tasks = snapshot.getValue<Map<String, TaskWorker>>()
-                    if (index >= 0 && index < tasks?.size!!) {
-//                        tasks[index] = updatedTask
-                        val post = hashMapOf("TaskWorker" to tasks).toMap()
+                    if (index >= 0) {
+                        val post = hashMapOf(
+                            "CompletionDate" to updatedTask.CompletionDate,
+                            "IsDone" to updatedTask.IsDone,
+                        ).toMap()
                         database.updateChildren(post).addOnSuccessListener {
                             continuation.resume(true)
                         }.addOnFailureListener { error ->
