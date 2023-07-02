@@ -117,7 +117,6 @@ fun ButtonElement(isDone: Int = -1, onClick: () -> Unit){
     val text = when(isDone){
         1 -> "Отметить как выполненную"
         2 -> "Выполнено"
-        3 -> "123"
         else -> "Войти в систему"
     }
 
@@ -131,7 +130,7 @@ fun ButtonElement(isDone: Int = -1, onClick: () -> Unit){
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00A9EC), disabledContainerColor = Color(0xFF86DDFF)),
         enabled = isDone in -1..1
     ) {
-        if(isDone == 2 or 3) Icon(
+        if(isDone == 2) Icon(
             imageVector = Icons.Default.Done,
             contentDescription = "iconDone",
             modifier = Modifier.size(48.dp),

@@ -74,7 +74,7 @@ fun TabPage(
             dragEnabled = true
         ) { page ->
             when (page) {
-                0 -> TaskScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 1 } ?: emptyList(), tabPageScreenViewModel)
+                0 -> TaskScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 1 or 2 } ?: emptyList(), tabPageScreenViewModel)
                 1 -> TaskDoneScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 3 } ?: emptyList())
             }
         }

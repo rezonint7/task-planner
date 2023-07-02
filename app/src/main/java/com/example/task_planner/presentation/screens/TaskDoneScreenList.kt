@@ -55,7 +55,9 @@ fun TaskDoneElement(task: TaskWorker?){
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)){
-            Text(text = statusText, style = Typography.titleMedium, color = colorStatusText)
+            Text(text = task?.NameTask.toString(), style = Typography.titleMedium, color = colorStatusText)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = statusText, style = Typography.bodySmall, color = colorStatusText)
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = task?.TaskOverview.toString(), style = Typography.bodySmall, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
@@ -64,9 +66,6 @@ fun TaskDoneElement(task: TaskWorker?){
             Text(text = "Срок выполнения: ", style = Typography.bodySmall, color = Color.Black)
             Text(text = "до " + task?.DateDone.toString(), style = Typography.bodySmall, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
-            ButtonElement(task?.IsDone!!.toInt()) {
-
-            }
         }
     }
 }
