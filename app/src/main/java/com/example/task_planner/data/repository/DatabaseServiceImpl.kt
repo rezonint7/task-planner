@@ -9,6 +9,7 @@ import com.example.task_planner.data.database_helper.DatabaseHelper
 import com.example.task_planner.data.models.TaskWorker
 import com.example.task_planner.data.models.Worker
 import com.example.task_planner.domain.repository.DatabaseService
+import com.example.task_planner.presentation.screens.tab_page_screen.ErrorResult
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.database.DataSnapshot
@@ -43,7 +44,6 @@ class DatabaseServiceImpl: DatabaseService {
                 val tasks = snapshot.getValue(Worker::class.java)?.TaskWorker ?: emptyList()
                 trySend(tasks)
             }
-
             override fun onCancelled(error: DatabaseError) {
                 cancel("Cancellation message", error.toException())
             }
@@ -57,7 +57,6 @@ class DatabaseServiceImpl: DatabaseService {
         val database = DatabaseHelper.getRealTimeDatabase().getReferenceFromUrl(Constants.DATABASE_NAME)
             .child(userKey)
             .child("TaskWorker")
-            .child((index+1).toString())
         return suspendCancellableCoroutine { continuation ->
             val taskListener = object : ValueEventListener {
                 @RequiresApi(Build.VERSION_CODES.TIRAMISU)

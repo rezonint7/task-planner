@@ -61,10 +61,11 @@ fun TaskDoneElement(task: TaskWorker?){
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = task?.TaskOverview.toString(), style = Typography.bodySmall, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = task?.TaskOverview.toString(), style = Typography.bodySmall, color = Color.Black)
-            Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Срок выполнения: ", style = Typography.bodySmall, color = Color.Black)
             Text(text = "до " + task?.DateDone.toString(), style = Typography.bodySmall, color = Color.Black)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Дата выполнения: ", style = Typography.bodySmall, color = Color.Black)
+            Text(text = task?.CompletionDate.toString(), style = Typography.bodySmall, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
         }
     }

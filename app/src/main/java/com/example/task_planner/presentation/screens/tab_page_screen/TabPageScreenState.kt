@@ -12,3 +12,5 @@ data class UpdatedTask(
     val isUpdated: Boolean = false,
     val error: String = ""
 )
+
+data class ErrorResult(val errorCode: Int, val errorMessage: String)

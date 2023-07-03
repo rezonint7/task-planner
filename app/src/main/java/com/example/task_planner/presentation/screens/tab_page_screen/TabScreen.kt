@@ -23,6 +23,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.task_planner.presentation.screens.TaskDoneScreenList
 import com.example.task_planner.presentation.screens.TaskScreenList
+import com.example.task_planner.presentation.screens.use_cases.ErrorUseCaseElement
+import com.example.task_planner.presentation.screens.use_cases.LoadingUseCaseElement
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -74,9 +76,17 @@ fun TabPage(
             dragEnabled = true
         ) { page ->
             when (page) {
-                0 -> TaskScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 1 or 2 } ?: emptyList(), tabPageScreenViewModel)
-                1 -> TaskDoneScreenList(tabPageScreenViewModel.tasks.value.tasks?.drop(1)?.filter { task -> task.IsDone == 3 } ?: emptyList())
+                0 -> TaskScreenList(tabPageScreenViewModel.tasks.value.tasks?.filter { task -> task.IsDone == 1 || task.IsDone == 2 } ?: emptyList(), tabPageScreenViewModel)
+                1 -> TaskDoneScreenList(tabPageScreenViewModel.tasks.value.tasks?.filter { task -> task.IsDone == 3 } ?: emptyList())
             }
+        }
+    }
+    if(tabPageScreenViewModel.tasks.value.isLoading){
+        LoadingUseCaseElement()
+    }
+    if(tabPageScreenViewModel.tasks.value.error.isNotBlank()){
+        ErrorUseCaseElement(error = tabPageScreenViewModel.tasks.value.error) {
+
         }
     }
 }

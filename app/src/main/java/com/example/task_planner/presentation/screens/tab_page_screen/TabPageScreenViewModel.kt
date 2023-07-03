@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.task_planner.common.Resource
 import com.example.task_planner.data.models.TaskWorker
+import com.example.task_planner.data.sharedprefs_helper.SharedPrefsHelper
 import com.example.task_planner.domain.repository.DatabaseService
 import com.example.task_planner.domain.use_cases.AuthUserUseCase
 import com.example.task_planner.domain.use_cases.GetDataUseCase
@@ -21,14 +22,15 @@ import javax.inject.Inject
 @HiltViewModel
 class TabPageScreenViewModel @Inject constructor(
     private val getDataUseCase: GetDataUseCase,
-    private val updateDataUseCase: UpdateDataUseCase): ViewModel() {
+    private val updateDataUseCase: UpdateDataUseCase,
+    private val sharedPrefsHelper: SharedPrefsHelper): ViewModel() {
     private val _tasks = mutableStateOf<TabPageScreenState>(TabPageScreenState())
     private val _isUpdatedTask = mutableStateOf<UpdatedTask>(UpdatedTask())
     val tasks: State<TabPageScreenState> = _tasks
     val isUpdatedTask = _isUpdatedTask
 
     init {
-        getTasks(Firebase.auth.currentUser?.uid.toString())
+        getTasks(Firebase.auth.currentUser?.uid ?: sharedPrefsHelper.getToken().toString())
     }
 
     private fun getTasks(userKey: String){

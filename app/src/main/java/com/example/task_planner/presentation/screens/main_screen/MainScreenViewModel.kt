@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.task_planner.common.Resource
+import com.example.task_planner.data.sharedprefs_helper.SharedPrefsHelper
 import com.example.task_planner.domain.repository.DatabaseService
 import com.example.task_planner.domain.use_cases.AuthUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(private val authUserUseCase: AuthUserUseCase): ViewModel() {
+class MainScreenViewModel @Inject constructor(
+    private val authUserUseCase: AuthUserUseCase): ViewModel() {
     private val _userInfo = mutableStateOf<MainScreenState>(MainScreenState())
     val userInfo: State<MainScreenState> = _userInfo
 
@@ -32,7 +34,6 @@ class MainScreenViewModel @Inject constructor(private val authUserUseCase: AuthU
                     Log.d("Email", _userInfo.value.user?.email.toString())
                 }
             }
-            Log.d("error", "vm")
         }.launchIn(viewModelScope)
     }
 }

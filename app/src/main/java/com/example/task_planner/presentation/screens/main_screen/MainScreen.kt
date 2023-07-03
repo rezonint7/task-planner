@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.task_planner.R
+import com.example.task_planner.data.sharedprefs_helper.SharedPrefsHelper
 import com.example.task_planner.presentation.navigation.NavigationScreens
 import com.example.task_planner.ui.theme.Typography
 
@@ -98,9 +100,20 @@ fun MainScreen(
                 mainScreenViewModel.AuthorizeUser(login.value.trim(), password.value.trim())
             }
         }
+        val context = LocalContext.current
         var navigateToTabPage by remember { mutableStateOf(false) }
+        LaunchedEffect(key1 = true){
+            if(SharedPrefsHelper.getInstance(context).containsTokens()){
+                controller.navigate(NavigationScreens.TabPage.route){
+                    popUpTo(NavigationScreens.Main.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
         LaunchedEffect(mainScreenViewModel.userInfo.value.user?.email) {
-            if (mainScreenViewModel.userInfo.value.user?.email?.isNotBlank() == true && !navigateToTabPage) {
+            if (mainScreenViewModel.userInfo.value.user?.email?.isNotBlank() == true &&
+                !navigateToTabPage && SharedPrefsHelper.getInstance(context).containsTokens()) {
                 navigateToTabPage = true
                 controller.navigate(NavigationScreens.TabPage.route){
                     popUpTo(NavigationScreens.Main.route) {
@@ -110,6 +123,7 @@ fun MainScreen(
             }
         }
     }
+
 }
 
 @Composable
@@ -123,9 +137,13 @@ fun ButtonElement(isDone: Int = -1, onClick: () -> Unit){
     Button(
         onClick = { onClick() },
         modifier = Modifier
-            .fillMaxWidth().height(48.dp)
+            .fillMaxWidth()
+            .height(48.dp)
             .padding(horizontal = 14.dp)
-            .border(border = BorderStroke(1.dp, Color(0xFF00A9EC)), shape = RoundedCornerShape(10.dp)),
+            .border(
+                border = BorderStroke(1.dp, Color(0xFF00A9EC)),
+                shape = RoundedCornerShape(10.dp)
+            ),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00A9EC), disabledContainerColor = Color(0xFF86DDFF)),
         enabled = isDone in -1..1

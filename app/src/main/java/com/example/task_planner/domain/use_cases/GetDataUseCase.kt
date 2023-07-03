@@ -18,8 +18,8 @@ class GetDataUseCase @Inject constructor(private val repository: DatabaseService
             repository.getTasksList(userKey).collect { tasks ->
                 emit(Resource.Success(tasks))
             }
-        }catch(e: FirebaseTooManyRequestsException){
-
+        }catch(e: Exception){
+            emit(Resource.Error(message = e.localizedMessage?.toString() ?: "Ошибка"))
         }
     }
 }
