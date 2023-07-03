@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UpdateDataUseCase @Inject constructor(private val repository: DatabaseService) {
-    operator fun invoke(userKey: String, index: Int, updatedTask: TaskWorker): Flow<Resource<Boolean>> = flow {
+    operator fun invoke(userKey: String, UUID: String, updatedTask: TaskWorker): Flow<Resource<Boolean>> = flow {
         try{
             emit(Resource.Loading())
-            val result = repository.updateTask(userKey, index, updatedTask)
+            val result = repository.updateTask(userKey, UUID, updatedTask)
             emit(Resource.Success(result))
 
         }catch(e: FirebaseTooManyRequestsException){

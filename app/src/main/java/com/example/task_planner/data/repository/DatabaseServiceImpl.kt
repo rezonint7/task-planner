@@ -53,7 +53,7 @@ class DatabaseServiceImpl: DatabaseService {
             database.removeEventListener(taskListener)
         }
     }
-    override suspend fun updateTask(userKey: String, index: Int, updatedTask: TaskWorker): Boolean {
+    override suspend fun updateTask(userKey: String, UUID: String, updatedTask: TaskWorker): Boolean {
         val database = DatabaseHelper.getRealTimeDatabase().getReferenceFromUrl(Constants.DATABASE_NAME)
             .child(userKey)
             .child("TaskWorker")
@@ -62,20 +62,24 @@ class DatabaseServiceImpl: DatabaseService {
                 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
                 @SuppressLint("SimpleDateFormat")
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (index >= 0) {
-                        val post = hashMapOf(
-                            "CompletionDate" to updatedTask.CompletionDate,
-                            "IsDone" to updatedTask.IsDone,
-                        ).toMap()
-                        database.updateChildren(post).addOnSuccessListener {
-                            continuation.resume(true)
-                        }.addOnFailureListener { error ->
-                            continuation.resumeWithException(error)
+                    val iterator = snapshot.children.iterator()
+                    while (iterator.hasNext()) {
+                        val dataSnapshot = iterator.next()
+                        if (dataSnapshot.child("UUID").value == UUID) {
+                            dataSnapshot.ref.updateChildren(
+                                hashMapOf(
+                                    "CompletionDate" to updatedTask.CompletionDate,
+                                    "IsDone" to updatedTask.IsDone
+                                ).toMap()
+                            ).addOnSuccessListener {
+                                continuation.resume(true)
+                            }.addOnFailureListener { error ->
+                                continuation.resumeWithException(error)
+                            }
+                            return
                         }
                     }
-                    else {
-                        continuation.resumeWithException(IndexOutOfBoundsException("Index out of bounds"))
-                    }
+                    continuation.resume(false)
                 }
 
                 override fun onCancelled(error: DatabaseError) {

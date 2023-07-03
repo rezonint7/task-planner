@@ -50,8 +50,8 @@ class TabPageScreenViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun updateTask(userKey: String, index: Int, updatedTask: TaskWorker){
-        updateDataUseCase(userKey, index, updatedTask).onEach { result ->
+    fun updateTask(userKey: String, UUID: String, updatedTask: TaskWorker){
+        updateDataUseCase(userKey, UUID, updatedTask).onEach { result ->
             when(result){
                 is Resource.Error -> { _isUpdatedTask.value = UpdatedTask(error = result.message ?: "") }
                 is Resource.Success -> { _isUpdatedTask.value = UpdatedTask(isUpdated = result.data ?: false) }

@@ -46,7 +46,7 @@ fun TaskScreenList(list: List<TaskWorker>, tabPageScreenViewModel: TabPageScreen
         .background(Color.White)) {
         LazyColumn(modifier = Modifier.fillMaxSize()){
             itemsIndexed(list){ index, task ->
-                TaskElement(task = task, index = index, tabPageScreenViewModel)
+                TaskElement(task = task, UUID = task.UUID.toString(), tabPageScreenViewModel)
             }
         }
     }
@@ -55,7 +55,7 @@ fun TaskScreenList(list: List<TaskWorker>, tabPageScreenViewModel: TabPageScreen
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun TaskElement(task: TaskWorker?, index: Int, tabPageScreenViewModel: TabPageScreenViewModel){
+fun TaskElement(task: TaskWorker?, UUID: String, tabPageScreenViewModel: TabPageScreenViewModel){
     Card(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
         backgroundColor = Color.White,
         elevation = 8.dp
@@ -77,7 +77,7 @@ fun TaskElement(task: TaskWorker?, index: Int, tabPageScreenViewModel: TabPageSc
             ButtonElement(task?.IsDone!!.toInt()) {
                 val updatedTask = task.copy(CompletionDate = SimpleDateFormat("dd.MM.yyyy").format(Date()), IsDone = 2)
                 val user = Firebase.auth.currentUser?.uid.toString()
-                tabPageScreenViewModel.updateTask(user, index, updatedTask)
+                tabPageScreenViewModel.updateTask(user, UUID, updatedTask)
             }
         }
     }

@@ -5,5 +5,6 @@ data class TaskWorker(
     val CompletionDate: String? = "",
     val IsDone: Int = -1,
     val NameTask: String? = "",
-    val TaskOverview: String? = ""
+    val TaskOverview: String? = "",
+    val UUID: String? = ""
 )

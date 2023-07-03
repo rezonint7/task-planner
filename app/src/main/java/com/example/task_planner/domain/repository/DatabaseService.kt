@@ -12,5 +12,5 @@ interface DatabaseService {
     suspend fun getAuthUser(): FirebaseUser?
     suspend fun authorizeUser(email: String, password: String): Task<AuthResult>
     suspend fun getTasksList(userKey: String): Flow<List<TaskWorker>>
-    suspend fun updateTask(userKey: String, index: Int, updatedTask: TaskWorker): Boolean
+    suspend fun updateTask(userKey: String, UUID: String, updatedTask: TaskWorker): Boolean
 }
