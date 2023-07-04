@@ -48,7 +48,7 @@ fun TaskDoneElement(task: TaskWorker?){
         elevation = 8.dp
     ) {
         val statusText = when{
-            (task?.IsDone == 2 && ConvertToDate(task.DateDone.toString())?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()!! <= LocalDate.now()) -> "Выполнена в срок"
+            (task?.IsDone == 2 && ConvertToDate(task.DateDone.toString())!! >= ConvertToDate(task.CompletionDate.toString())) -> "Выполнена в срок"
             else -> "Выполнено с задержкой"
         }
         val colorStatusText = if(statusText == "Выполнено с задержкой") Color.Red else Color.Green
